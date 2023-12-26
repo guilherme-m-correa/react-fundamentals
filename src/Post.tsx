@@ -1,8 +1,15 @@
-function Post() {
+interface PostProps {
+  author: string
+  content: string
+}
+
+
+function Post(props: PostProps) {
   return (
-    <p>
-      Post
-    </p>
+    <div>
+      <strong>{props.author}</strong>
+      <p>{props.content}</p>
+    </div>
   )
 }
 

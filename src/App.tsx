@@ -3,9 +3,14 @@ import Post from "./Post"
 function App() {
   return (
     <div>
-      <Post />
-      <Post />
-      <Post />
+      <Post 
+        author="John Doe"
+        content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatibus."
+        />
+      <Post
+        author="Jane Doe"
+        content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatibus."
+      />
     </div>
   )
 }
