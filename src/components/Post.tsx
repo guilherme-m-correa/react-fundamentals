@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, InvalidEvent, useState } from 'react';
 
 import { Avatar } from './Avatar';
 import { Comment } from './Comment';
@@ -7,17 +7,21 @@ import { Comment } from './Comment';
 import styles from './Post.module.css';
 
 
-interface PostProps{
-  author: {
-    avatarUrl: string;
-    name: string;
-    role: string;
-  },
-  content: {
-    type: string;
-    content: string;
-  }[],
+interface Author {
+  name: string;
+  role: string;
+  avatarUrl: string;
+}
+
+interface Content {
+  type: 'paragraph' | 'link';
+  content: string;
+}
+
+interface PostProps {
+  author: Author;
   publishedAt: Date;
+  content: Content[];
 }
 
 export function Post({ author, publishedAt, content }: PostProps) {
@@ -28,23 +32,23 @@ export function Post({ author, publishedAt, content }: PostProps) {
  
   const publishedDateFormatted = format(publishedAt, 'MMMM do \'at\' h a')
 
-  function handleCrateNewComment(event: FormEvent) {
+  function handleCreateNewComment(event: FormEvent) {
     event.preventDefault()
 
     setComments([...comments, newCommentText]);
     setNewCommentText('');
   }
 
-  function handleNewCommentChange(event: FormEvent<HTMLTextAreaElement>) {
-    setNewCommentText((event.target as HTMLTextAreaElement).value);
+  function handleNewCommentChange(event: ChangeEvent<HTMLTextAreaElement>) {
+    setNewCommentText(event.target.value);
   }
   
   function deleteComment(commentToDelete: string) {
     setComments(comments.filter(comment => comment !== commentToDelete));
   }
 
-  function handleNewCommentInvalid(event: FormEvent<HTMLTextAreaElement>) {
-    (event.target as HTMLTextAreaElement).setCustomValidity('Please, leave a comment');
+  function handleNewCommentInvalid(event: InvalidEvent<HTMLTextAreaElement>) {
+    event.target.setCustomValidity('Please, leave a comment');
   }
 
   const isNewCommentEmpty = newCommentText.length === 0
@@ -75,7 +79,7 @@ export function Post({ author, publishedAt, content }: PostProps) {
         })}
       </div>
 
-      <form onSubmit={handleCrateNewComment} className={styles.commentForm}>
+      <form onSubmit={handleCreateNewComment} className={styles.commentForm}>
         <strong>Leave your feedback</strong>
 
         <textarea

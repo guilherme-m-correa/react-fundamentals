@@ -4,6 +4,7 @@ import { Avatar } from './Avatar';
 import styles from './Comment.module.css';
 
 import { ThumbsUp, Trash } from 'phosphor-react';
+
 interface CommentProps {
   content: string;
   onDeleteComment: (content: string) => void;
